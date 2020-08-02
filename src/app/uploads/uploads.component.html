@@ -1,0 +1,49 @@
+<p>uploads works!</p>
+<br />
+
+<div class="row">
+  <div class="col-md-6">
+    <div *ngIf="fileUploaded.status == 'error'">
+      <div [innerHTML]="fileUploaded.hasDone"></div>
+    </div>
+    <div *ngIf="fileUploaded.status == 'Progress'">
+      <div class="progress" style="height: 20px; margin-bottom: 20px;">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width.%]="fileUploaded.hasDone"
+          arial-valuenow="0"
+          arial-valuemin="0"
+          arial-valuemax="fileUploaded.totalFiles"
+        >
+          {{ fileUploaded.hasDone }}
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmitFormValues()">
+      <div class="form-group">
+        <input
+          type="file"
+          name="profileimage"
+          (change)="onSelectFile($event)"
+        />
+      </div>
+      <div class="form-group">
+        <Button type="submit" class="btn btn-success">Uploads</Button>
+      </div>
+    </form>
+    <br />
+    <div *ngIf="ImageList.length > 0">
+      <div *ngFor="let img of ImageList">
+        <span>
+          <img
+            src="getFilePath(img.filePath)"
+            alt=""
+            height="150px"
+            width="150px"
+        /></span>
+      </div>
+    </div>
+  </div>
+</div>
