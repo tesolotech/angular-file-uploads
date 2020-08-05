@@ -3,10 +3,10 @@
 
 <div class="row">
   <div class="col-md-6">
-    <div *ngIf="fileUploaded.status == 'error'">
+    <!-- <div *ngIf="fileUploaded.status == 3">
       <div [innerHTML]="fileUploaded.hasDone"></div>
-    </div>
-    <div *ngIf="fileUploaded.status == 'Progress'">
+    </div> -->
+    <div *ngIf="fileUploaded.status">
       <div class="progress" style="height: 20px; margin-bottom: 20px;">
         <div
           class="progress-bar"
@@ -25,6 +25,7 @@
       <div class="form-group">
         <input
           type="file"
+          multiple
           name="profileimage"
           (change)="onSelectFile($event)"
         />
@@ -34,14 +35,14 @@
       </div>
     </form>
     <br />
-    <div *ngIf="ImageList.length > 0">
+    <div *ngIf="ImageList">
       <div *ngFor="let img of ImageList">
         <span>
           <img
-            src="getFilePath(img.filePath)"
+            src="{{ getFilePath(img.filePath) }}"
             alt=""
-            height="150px"
-            width="150px"
+            height="300px"
+            width="300px"
         /></span>
       </div>
     </div>

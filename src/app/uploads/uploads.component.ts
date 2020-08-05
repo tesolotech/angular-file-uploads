@@ -11,7 +11,8 @@ export class UploadsComponent implements OnInit {
   ImageList: any;
   profileForm: FormGroup;
   error: string;
-  fileUploaded: { hasDone: 0; status: ""; totalFiles: 0 };
+  images;
+  fileUploaded: { hasDone: 0; status: 0; totalFiles: 0 };
   constructor(
     private fb: FormBuilder,
     private fileUploadsService: FileUploadsService
@@ -29,20 +30,19 @@ export class UploadsComponent implements OnInit {
   }
 
   onSelectFile = (event: any) => {
-    console.log(event.target.files);
     if (event.target.files.length > 0) {
-      for (const img of event.target.files) {
-        this.profileForm.get("profile").setValue(img);
-      }
+      this.images = event.target.files;
     }
   };
 
   onSubmitFormValues = () => {
     console.log(this.profileForm);
     const formData = new FormData();
-    formData.append("profile", this.profileForm.get("profile").value);
+    for (let img of this.images) {
+      formData.append("profile", img);
+    }
 
-    this.fileUploadsService.uploadFiles(this.profileForm).subscribe(
+    this.fileUploadsService.uploadFiles(formData).subscribe(
       (res) => (this.fileUploaded = res),
       (err) => (this.error = err)
     );

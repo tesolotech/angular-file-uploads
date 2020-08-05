@@ -18,6 +18,8 @@ export class FileUploadsService {
   constructor(private http: HttpClient) {}
 
   uploadFiles(formData) {
+    const data = [];
+    data.push(formData);
     return this.http
       .post(`${this.postUrl}`, formData, {
         reportProgress: true,
@@ -33,16 +35,14 @@ export class FileUploadsService {
     return this.http.get(this.getUrl).pipe(catchError(this.handleError));
   }
 
-  private getErrorMessage(event, formData) {
+  private getErrorMessage(event, data) {
     switch (event.type) {
       case HttpEventType.UploadProgress:
         return this.fileUploadProgress(event);
       case HttpEventType.Response:
         return this.apiResponse(event);
       default:
-        return `File "${
-          formData.get("profile").name
-        }" surprising upload event: ${event.type}.`;
+        return `You get ${event.status} status surprising upload event: ${event.statusText}.`;
     }
   }
 
@@ -50,7 +50,7 @@ export class FileUploadsService {
     const hasDone = event.loaded - event.total;
     const totalFiles = event.total;
     return {
-      status: "Progress",
+      status: 1,
       hasDone,
       totalFiles,
     };
