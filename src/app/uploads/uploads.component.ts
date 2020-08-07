@@ -12,7 +12,7 @@ export class UploadsComponent implements OnInit {
   profileForm: FormGroup;
   error: string;
   images;
-  fileUploaded: { hasDone: 0; status: 0; totalFiles: 0 };
+  fileUploaded: { hasDone: 0; status: ""; totalFiles: 0 };
   constructor(
     private fb: FormBuilder,
     private fileUploadsService: FileUploadsService
@@ -23,10 +23,13 @@ export class UploadsComponent implements OnInit {
       profile: [""],
     });
 
+    this.getProfilePicture();
+  }
+
+  getProfilePicture() {
     this.fileUploadsService.getProfilesImage().subscribe((data) => {
       this.ImageList = data;
     });
-    console.log(this.ImageList);
   }
 
   onSelectFile = (event: any) => {
@@ -43,7 +46,10 @@ export class UploadsComponent implements OnInit {
     }
 
     this.fileUploadsService.uploadFiles(formData).subscribe(
-      (res) => (this.fileUploaded = res),
+      (res) => {
+        this.fileUploaded = res;
+        this.getProfilePicture();
+      },
       (err) => (this.error = err)
     );
   };
